@@ -33,48 +33,62 @@ module.exports = Dropdown;
 Dropdown.prototype.events = function() {
     // Handlers
     this.onParent = function(e) {
-        // console.log('close in parent', this.options.id);
+        console.log('close in parent', this.options.id, e);
         this.close();
         this.parentElement.removeEventListener('click', this.onParent);
         e.stopPropagation();
     }.bind(this);
 
-    this.onWindow = function() {
-        // console.log('close in window', this.options.id);
+    this.onWindow = function(e) {
+        console.log('close in window', this.options.id);
+        if (e.dropdowns && e.dropdowns[this.options.id] === false) {
+            return;
+        }
         this.close();
     }.bind(this);
 
     this.onToggle = function(e) {
-        // console.log('click button', this.options.id);
+        console.log('click button', this.options.id);
         this.toggle();
         e.stopPropagation();
     }.bind(this);
 
     this.onDropdown = function(e) {
-        // console.log('click dropdown', this.options.id);
-        if (!this.options.autoClose) {
-            e.stopPropagation();
+        console.log('click dropdown', this.options.id);
+        if (!e.dropdowns) {
+            e.dropdowns = {};
+        }
+
+        if (this.options.autoClose) {
+            // e.dontClose = true;
+            e.dropdowns[this.options.id] = true;
+            // e.stopPropagation();
+        } else {
+            e.dropdowns[this.options.id] = false;
+            // e.dontClose = false;
         }
     }.bind(this);
 
     this.toggleElement.addEventListener(clickEvent, this.onToggle);
-    this.dropdownElement.addEventListener(clickEvent, this.onDropdown);
+    this.dropdownElement.addEventListener(clickEvent, this.onDropdown, true);
 };
 
 Dropdown.prototype.open = function() {
     this.dropdownElement.classList.add(this.openClass);
     this.isOpen = true;
     window.addEventListener(clickEvent, this.onWindow);
-    this.parentElement.addEventListener(clickEvent, this.onParent);
+    //this.parentElement.addEventListener(clickEvent, this.onParent);
     this.options.onOpen(this);
 };
 
 Dropdown.prototype.close = function() {
-    this.dropdownElement.classList.remove(this.openClass);
-    this.isOpen = false;
-    window.removeEventListener(clickEvent, this.onWindow);
-    this.parentElement.removeEventListener(clickEvent, this.onParent);
-    this.options.onClose(this);
+    if (this.isOpen) {
+        this.dropdownElement.classList.remove(this.openClass);
+        this.isOpen = false;
+        window.removeEventListener(clickEvent, this.onWindow);
+        //this.parentElement.removeEventListener(clickEvent, this.onParent);
+        this.options.onClose(this);
+    }
 };
 
 Dropdown.prototype.toggle = function() {
