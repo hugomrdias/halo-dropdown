@@ -1,0 +1,16 @@
+#container {
+    background: red;
+    padding: 20px;
+}
+
+.Dropdown {
+    padding: 20px;
+    background: gray;
+    display: none;
+}
+
+.Dropdown.is-open {
+    display: block;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9zdHlsZS5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxnQkFBZ0I7SUFDaEIsY0FBYztDQUNqQjs7QUFFRDtJQUNJLGNBQWM7SUFDZCxpQkFBaUI7SUFDakIsY0FBYztDQUNqQjs7QUFFRDtJQUNJLGVBQWU7Q0FDbEIiLCJmaWxlIjoic3R5bGUuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI2NvbnRhaW5lciB7XG4gICAgYmFja2dyb3VuZDogcmVkO1xuICAgIHBhZGRpbmc6IDIwcHg7XG59XG5cbi5Ecm9wZG93biB7XG4gICAgcGFkZGluZzogMjBweDtcbiAgICBiYWNrZ3JvdW5kOiBncmF5O1xuICAgIGRpc3BsYXk6IG5vbmU7XG59XG5cbi5Ecm9wZG93bi5pcy1vcGVuIHtcbiAgICBkaXNwbGF5OiBibG9jaztcbn1cbiJdfQ== */
