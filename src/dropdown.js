@@ -48,7 +48,7 @@ module.exports = Dropdown;
 Dropdown.openClass = 'is-open';
 
 Dropdown.global = function(classSelector) {
-    window.addEventListener('click', function(e) {
+    window.addEventListener(clickEvent, function(e) {
         var autoClose;
         var target = e.target;
         var dropdown;
