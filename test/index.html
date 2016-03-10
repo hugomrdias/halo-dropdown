@@ -45,12 +45,12 @@
         <h3 class="Test-it">Base</h3>
         <div class="Test-run" id="a">
             <div id="container">
-                <button id="toggle" class="Toggle" data-dropdown="#dropdown">Click</button>
+                <button id="toggle" data-autoClose="false" data-dropdown="#dropdown">Click</button>
                 <div id="dropdown" class="Dropdown">
                     <input type="text" />
                     <input type="checkbox" />
                     <br/>
-                    <button id="toggle2" class="Toggle" data-dropdown="#dropdown2">Click</button>
+                    <button id="toggle2" data-dropdown="#dropdown2">Click</button>
                     <div id="dropdown2" class="Dropdown">
                         <input type="text" />
                         <input type="checkbox" />
@@ -59,6 +59,28 @@
             </div>
             <button id="destroy">Destroy</button>
             <button id="remove">Remove</button>
+        </div>
+        <h3 class="Test-it">Simple</h3>
+        <div class="Test-run" id="a">
+            <button class="Toggle" data-dropdown="#dropdown-simple">Click</button>
+            <ul id="dropdown-simple" class="Dropdown">
+                <li>one</li>
+                <li>two</li>
+            </ul>
+        </div>
+        <h3 class="Test-it">Simple autoClose off</h3>
+        <div class="Test-run" id="a">
+            <button class="Toggle" data-autoClose="false" data-dropdown="#dropdown-auto">Click</button>
+            <ul id="dropdown-auto" class="Dropdown">
+                <input type="text" /><br>
+                <label>check</label>
+                <input type="checkbox" /><br>
+                <button class="Toggle" data-dropdown="#dropdown-simple-nested">Click</button>
+                <ul id="dropdown-simple-nested" class="Dropdown">
+                    <li>one</li>
+                    <li>two</li>
+                </ul>
+            </ul>
         </div>
     </div>
     <script src="bundle.js"></script>

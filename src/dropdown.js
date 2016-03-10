@@ -1,6 +1,7 @@
 'use strict';
 
 var assign = require('lodash.assign');
+var uniqueId = require('lodash.uniqueid');
 var noop = function() {};
 var defaults = {
     toggle: null,
@@ -18,54 +19,81 @@ if (window.navigator.msPointerEnabled) {
     clickEvent = 'MSPointerDown';
 }
 
+function findId(element, id) {
+    var elementId = element.id;
+
+    if (id) {
+        return id;
+    }
+
+    if (elementId) {
+        return elementId;
+    }
+
+    return uniqueId();
+}
+
 function Dropdown(options) {
     this.options = assign({}, defaults, options);
     this.toggleElement = this.options.toggle instanceof Element ? this.options.toggle : document.querySelector(this.options.toggle);
     this.dropdownElement = document.querySelector(this.toggleElement.getAttribute('data-dropdown'));
-    this.parentElement = this.dropdownElement.parentNode;
+    this.id = findId(this.dropdownElement, this.options.id);
     this.isOpen = false;
-    this.openClass = 'is-open';
+    this.openClass = Dropdown.openClass;
     this.events();
 }
 
 module.exports = Dropdown;
 
+Dropdown.openClass = 'is-open';
+
+Dropdown.global = function(classSelector) {
+    window.addEventListener('click', function(e) {
+        var autoClose;
+        var target = e.target;
+        var dropdown;
+
+        if (target.classList.contains(classSelector) && target.getAttribute('data-global') !== 'true') {
+            target.setAttribute('data-global', 'true');
+            autoClose = e.target.getAttribute('data-autoClose') === 'false' ? false : true;
+            dropdown = new Dropdown({
+                toggle: e.target,
+                autoClose: autoClose
+            });
+        }
+    }, true);
+};
+
 Dropdown.prototype.events = function() {
     // Handlers
-    this.onParent = function(e) {
-        console.log('close in parent', this.options.id, e);
-        this.close();
-        this.parentElement.removeEventListener('click', this.onParent);
-        e.stopPropagation();
-    }.bind(this);
-
     this.onWindow = function(e) {
-        console.log('close in window', this.options.id);
-        if (e.dropdowns && e.dropdowns[this.options.id] === false) {
+        if (e.dropdowns && e.dropdowns[this.id] === false) {
             return;
         }
+
         this.close();
+        // console.log('close in window', this.id);
     }.bind(this);
 
     this.onToggle = function(e) {
-        console.log('click button', this.options.id);
+        // console.log('click button', this.id);
+        if (!e.dropdowns) {
+            e.dropdowns = {};
+        }
+        e.dropdowns[this.id] = false;
         this.toggle();
-        e.stopPropagation();
     }.bind(this);
 
     this.onDropdown = function(e) {
-        console.log('click dropdown', this.options.id);
+        // console.log('click dropdown', this.id);
         if (!e.dropdowns) {
             e.dropdowns = {};
         }
 
         if (this.options.autoClose) {
-            // e.dontClose = true;
-            e.dropdowns[this.options.id] = true;
-            // e.stopPropagation();
+            e.dropdowns[this.id] = true;
         } else {
-            e.dropdowns[this.options.id] = false;
-            // e.dontClose = false;
+            e.dropdowns[this.id] = false;
         }
     }.bind(this);
 
@@ -75,20 +103,18 @@ Dropdown.prototype.events = function() {
 
 Dropdown.prototype.open = function() {
     this.dropdownElement.classList.add(this.openClass);
+    this.toggleElement.classList.add(this.openClass);
     this.isOpen = true;
     window.addEventListener(clickEvent, this.onWindow);
-    //this.parentElement.addEventListener(clickEvent, this.onParent);
     this.options.onOpen(this);
 };
 
 Dropdown.prototype.close = function() {
-    if (this.isOpen) {
-        this.dropdownElement.classList.remove(this.openClass);
-        this.isOpen = false;
-        window.removeEventListener(clickEvent, this.onWindow);
-        //this.parentElement.removeEventListener(clickEvent, this.onParent);
-        this.options.onClose(this);
-    }
+    this.dropdownElement.classList.remove(this.openClass);
+    this.toggleElement.classList.remove(this.openClass);
+    this.isOpen = false;
+    window.removeEventListener(clickEvent, this.onWindow);
+    this.options.onClose(this);
 };
 
 Dropdown.prototype.toggle = function() {
@@ -100,7 +126,10 @@ Dropdown.prototype.toggle = function() {
 };
 
 Dropdown.prototype.destroy = function() {
+    if (this.isOpen) {
+        this.close();
+    }
+
     this.toggleElement.removeEventListener(clickEvent, this.onToggle);
     this.dropdownElement.removeEventListener(clickEvent, this.onDropdown);
-    window.removeEventListener(clickEvent, this.onWindow);
 };
