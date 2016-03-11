@@ -19,6 +19,8 @@ if (window.navigator.msPointerEnabled) {
     clickEvent = 'MSPointerDown';
 }
 
+clickEvent = 'click';
+
 function findId(element, id) {
     var elementId = element.id;
 
@@ -71,14 +73,7 @@ Dropdown.prototype.events = function() {
             return;
         }
 
-        if (clickEvent === 'click') {
-            this.close();
-        } else {
-            // defer close so click events can register inside dropdown
-            setTimeout(function() {
-                this.close();
-            }.bind(this), 200);
-        }
+        this.close();
         // console.log('close in window', this.id);
     }.bind(this);
 
