@@ -71,7 +71,14 @@ Dropdown.prototype.events = function() {
             return;
         }
 
-        this.close();
+        if (clickEvent === 'click') {
+            this.close();
+        } else {
+            // defer close so click events can register inside dropdown
+            setTimeout(function() {
+                this.close();
+            }.bind(this), 200);
+        }
         // console.log('close in window', this.id);
     }.bind(this);
 

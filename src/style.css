@@ -9,6 +9,11 @@
     display: none;
 }
 
+.Dropdown li {
+    padding: 10px;
+    background-color: green;
+}
+
 .Dropdown.is-open {
     display: block;
 }

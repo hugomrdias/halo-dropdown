@@ -23,3 +23,4 @@ document.querySelector('#remove').addEventListener('click', function() {
 });
 
 Dropdown.global('Toggle');
+

@@ -60,14 +60,6 @@
             <button id="destroy">Destroy</button>
             <button id="remove">Remove</button>
         </div>
-        <h3 class="Test-it">Simple</h3>
-        <div class="Test-run" id="a">
-            <button class="Toggle" data-dropdown="#dropdown-simple">Click</button>
-            <ul id="dropdown-simple" class="Dropdown">
-                <li>one</li>
-                <li>two</li>
-            </ul>
-        </div>
         <h3 class="Test-it">Simple autoClose off</h3>
         <div class="Test-run" id="a">
             <button class="Toggle" data-autoClose="false" data-dropdown="#dropdown-auto">Click</button>
@@ -77,9 +69,17 @@
                 <input type="checkbox" /><br>
                 <button class="Toggle" data-dropdown="#dropdown-simple-nested">Click</button>
                 <ul id="dropdown-simple-nested" class="Dropdown">
-                    <li>one</li>
-                    <li>two</li>
+                    <li><a href="google.com">one</a></li>
+                    <li><a href="google.com">two</a></li>
                 </ul>
+            </ul>
+        </div>
+        <h3 class="Test-it">Simple</h3>
+        <div class="Test-run" id="a">
+            <button class="Toggle" data-dropdown="#dropdown-simple">Click</button>
+            <ul id="dropdown-simple" class="Dropdown">
+                <li>one</li>
+                <li>two</li>
             </ul>
         </div>
     </div>
